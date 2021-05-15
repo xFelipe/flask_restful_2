@@ -1,0 +1,1 @@
+# Projeto de gerenciamento de produtos com flask
