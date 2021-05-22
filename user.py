@@ -1,6 +1,5 @@
 import sqlite3
 from flask_restful import Resource, reqparse
-# from flask import request
 
 class User:
     def __init__(self, _id, username, password):
