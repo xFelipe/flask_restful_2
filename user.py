@@ -35,21 +35,20 @@ class User:
             return cls(*row)
 
 class UserRegister(Resource):
-    def post(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('username', type=str, required=True,
-                            help='Username is a required text field')
-        parser.add_argument('password', type=str, required=True,
-                            help='Password is a required text field')
-        data = parser.parse_args()
+    parser = reqparse.RequestParser()
+    parser.add_argument('username', type=str, required=True,
+                        help='Username is a required text field')
+    parser.add_argument('password', type=str, required=True,
+                        help='Password is a required text field')
 
+    def post(self):
+        data = self.parser.parse_args()
         if User.find_by_username(data['username']):
             return {'error': f"Username '{data['username']}' already exists"},\
                    400
-
-        with sqlite3.connect('data.db') as conn:
-            cursor = conn.cursor()
+        with sqlite3.connect('data.db') as db_connection:
+            cursor = db_connection.cursor()
             query = 'insert into user (username, password) values (?, ?)'
             cursor.execute(query, (data['username'], data['password']))
-            conn.commit()
+            db_connection.commit()
         return {'message': 'sucess'}, 201
