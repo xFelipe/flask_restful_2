@@ -7,10 +7,8 @@ from item import ItemRegister, ItemListRegister
 
 app = Flask(__name__)
 app.secret_key = 'chave super aleatoria'
+app.config['JWT_EXPIRATION_DELTA'] = 3600
 api = Api(app)
-api.app.config['RESTFUL_JSON'] = {
-    'ensure_ascii': False
-}
 
 jwt = JWT(app, authenticate, identity)
 
